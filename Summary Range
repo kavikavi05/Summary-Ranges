@@ -1,0 +1,53 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+ #include <stdlib.h>
+
+char** summaryRanges(int* nums, int numsSize, int* returnSize) {
+    int i, j, k;
+    char** arr = malloc(sizeof(char*) * (numsSize+1));
+    // if nums array is empty, return empty array
+       if(numsSize == 0){
+        *returnSize = 0;
+        return arr;
+    }
+
+    for(i = 0; i < numsSize; i++){
+        arr[i] =  malloc(sizeof(char)*100);
+    }
+
+
+    for(i =0, j =i+1, k =0; j < numsSize; j++){
+        // if the previous is not equal to the next minus 1
+        if(nums[j - 1 ]!=nums[j] - 1 ) {
+
+            // add "number->number" if nums[i] and nums[j] are different
+            // add "number" if same
+            switch(nums[i] == nums[j-1]){
+                case 0:
+                snprintf(arr[k++], 100, "%d->%d", nums[i], nums[j-1]);
+                break;
+                case 1:
+                snprintf(arr[k++], 100, "%d", nums[i]);
+                break;
+            }
+
+
+            i = j;
+        }
+    }
+
+    // the same thing but for the last iteration
+    switch(nums[i] == nums[j-1]){
+                case 0:
+                snprintf(arr[k++], 100, "%d->%d", nums[i], nums[j-1]);
+                break;
+                case 1:
+                snprintf(arr[k++], 100, "%d", nums[i]);
+                break;
+            }
+
+    *returnSize = k;
+    return arr;
+}
